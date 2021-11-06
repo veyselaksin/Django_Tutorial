@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+    <style>
+        .jumbotron {
+            background-color: #E9ECEF;
+            color: #262626;
+            height: 200px;
+            width: 100%;
+            margin: auto;
+            padding: 10px;
+        }
+        .title{
+            color: #262626;
+            font-weight: bold;
+            font-size: larger;
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">Movie List</h2>
+    {% include 'partials/_jumbotron.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if movies %}
+                {% for movie in movies %}
+                    {% if movie.isPublished %}
+                        <div class="card mb-3">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img class="card-img" src="{% static movie.get_image_path %}" alt="image1">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="card-title"><a href="{% url 'detail' movie.id %}" class="title">{{ movie.name }}</a></div>
+                                        <p class="card-text">{{ movie.description }}</p>
+                                        <p class="card-text">
+                                            <small class="text-muted">{{ movie.created_date | timesince }} ago</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning">No Movies</div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
